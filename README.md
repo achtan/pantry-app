@@ -9,6 +9,9 @@ Simple showcase of Apollo (GraphQL) + React
 * [Webpack](https://webpack.github.io/) for development server + hot reloading clientside stuff
 * [Nodemon](https://github.com/remy/nodemon) for hot reloading backend code
 
+![alt text](https://github.com/achtan/pantry-app/blob/master/screenshots/select-user.png "Select user page")
+
+![alt text](https://github.com/achtan/pantry-app/blob/master/screenshots/select-snack.png "Select snack page")
 
 ## Making new app with this kit
 1. Clone this repo

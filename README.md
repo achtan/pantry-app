@@ -1,6 +1,8 @@
 # Pantry APP
 
 Simple showcase of Apollo (GraphQL) + React
+
+*project is build on https://github.com/saikat/react-apollo-starter-kit*
 * [React](https://facebook.github.io/react/) for frontend development
 * [GraphQL](http://graphql.org/) for backend API
 * [Apollo](http://apollostack.com) for backend/frontend data flow management

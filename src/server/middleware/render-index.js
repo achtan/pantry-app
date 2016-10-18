@@ -7,6 +7,7 @@ export default function renderIndex(html, css, assetMap, store) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>New App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.2.3/css/bulma.css" />
     <style data-aphrodite>${css.content}</style>
     <script>
       var _rollbarConfig = {

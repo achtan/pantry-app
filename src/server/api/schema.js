@@ -1,15 +1,42 @@
-import { schema as countSchema, resolvers as countResolvers } from './count'
-import Data from './data'
+import FakeDB from './data'
 import { makeExecutableSchema } from 'graphql-tools'
 
 const rootSchema = `
+
+  type Count {
+    id: String
+    amount: Int
+  }
+
+  type User {
+    id: String
+    name: String
+    slug: String
+    eatenSnacks: [SnacksLog]
+  }
+
+  type Snack {
+    id: String
+    name: String
+  }
+
+  type SnacksLog {
+    id: String
+    user: String
+    snack: String
+  }
+
+
   type RootQuery {
     count: Count
+    users: [User]
+    user(slug: String): User
+    snacks: [Snack]
   }
 
   type RootMutation {
     addCount(amount: Int!): Count
-    induceError: String
+    takeSnack(user: String!, snack: String!): User
   }
 
   schema {
@@ -18,34 +45,46 @@ const rootSchema = `
   }
 `
 
+
 const rootResolvers = {
+  Count: {
+    id: () => 'count_identifier',
+    amount: (count) => count
+  },
+  User: {
+    id: ({name}) => name,
+    name: ({name}) => name,
+    slug: ({name}) => name.toLowerCase(),
+    eatenSnacks: ({name}) => FakeDB.findSnacksLogs(name)
+  },
+  Snack: {
+    id: ({name}) => name,
+    name: ({name}) => name,
+  },
   RootQuery: {
-    count: () => Data.count
+    count: () => FakeDB.count,
+    users: () => FakeDB.users,
+    user: (_, {slug}) => FakeDB.findUserBySlug(slug),
+    snacks: () => FakeDB.snacks
   },
   RootMutation: {
     addCount(_, { amount }) {
-      Data.count += amount
-      return Data.count
+      FakeDB.count += amount
+      return FakeDB.count
     },
-    induceError() {
-      throw new Error('Custom error message')
+    takeSnack(_, {user, snack}) {
+      const u = FakeDB.findUserBySlug(user);
+      FakeDB.addSnackLog(u.name, snack);
+
+      return FakeDB.findUserBySlug(user);
     }
   }
 }
 
-const schema = [
-  rootSchema,
-  countSchema
-]
-
-const resolvers = {
-  ...rootResolvers,
-  ...countResolvers
-}
 
 const executableSchema = makeExecutableSchema({
-  typeDefs: schema,
-  resolvers
+  typeDefs: [rootSchema],
+  resolvers: rootResolvers
 })
 
 export default executableSchema
